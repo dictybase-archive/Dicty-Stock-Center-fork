@@ -15,4 +15,4 @@ workbox.routing.registerRoute(
   workbox.strategies.cacheFirst(),
 )
 
-// workbox.precaching.precacheAndRoute([])
+workbox.precaching.precacheAndRoute(self.__precacheManifest || [])

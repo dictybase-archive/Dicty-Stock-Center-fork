@@ -26,7 +26,7 @@ workbox.routing.registerRoute(
     cacheName: "images",
     plugins: [
       new workbox.expiration.Plugin({
-        maxEntries: 60,
+        maxEntries: 20,
         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
       }),
     ],
@@ -37,8 +37,24 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
   /\.(?:css)$/,
   workbox.strategies.staleWhileRevalidate({
-    cacheName: "css-resources",
+    cacheName: "css",
   }),
 )
 
+// font caching
+workbox.routing.registerRoute(
+  /\.(?:woff|woff2|eot|ttf)$/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "fonts",
+  }),
+)
+
+// self.addEventListener("fetch", event => {
+//   if (event.request.url === `${regexUrl}/contents/*`) {
+//     const staleWhileRevalidate = new workbox.strategies.StaleWhileRevalidate()
+//     event.respondWith(staleWhileRevalidate.handle({ event }))
+//   }
+// })
+
+// this would cache *everything* per https://developers.google.com/web/tools/workbox/guides/precache-files/webpack
 // workbox.precaching.precacheAndRoute(self.__precacheManifest || [])

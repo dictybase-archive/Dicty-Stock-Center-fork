@@ -5,13 +5,15 @@ importScripts(
 // matches a properly formed URL
 const regexUrl = "(?:https://.*)?"
 
+// cache routes for user api
 workbox.routing.registerRoute(
   new RegExp(`${regexUrl}/users/.*`),
-  workbox.strategies.cacheFirst({
+  workbox.strategies.networkFirst({
     cacheName: "user-api-data",
   }),
 )
 
+// cache data fetched from content api
 workbox.routing.registerRoute(
   new RegExp(`${regexUrl}/contents/.*`),
   workbox.strategies.cacheFirst({
@@ -41,6 +43,14 @@ workbox.routing.registerRoute(
   }),
 )
 
+// js caching
+workbox.routing.registerRoute(
+  /\.(?:js)$/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "javascript",
+  }),
+)
+
 // font caching
 workbox.routing.registerRoute(
   /\.(?:woff|woff2|eot|ttf)$/,
@@ -49,12 +59,5 @@ workbox.routing.registerRoute(
   }),
 )
 
-// self.addEventListener("fetch", event => {
-//   if (event.request.url === `${regexUrl}/contents/*`) {
-//     const staleWhileRevalidate = new workbox.strategies.StaleWhileRevalidate()
-//     event.respondWith(staleWhileRevalidate.handle({ event }))
-//   }
-// })
-
-// this would cache *everything* per https://developers.google.com/web/tools/workbox/guides/precache-files/webpack
+// below command would cache *everything* per https://developers.google.com/web/tools/workbox/guides/precache-files/webpack
 // workbox.precaching.precacheAndRoute(self.__precacheManifest || [])

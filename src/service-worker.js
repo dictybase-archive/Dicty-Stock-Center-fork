@@ -3,19 +3,19 @@ importScripts(
 )
 
 // matches a properly formed URL
-const regexUrl = "https?://(www.)?[-a-zA-Z0-9@:%._+~#=]{2,256}.[a-z]{2,6}\b"
+const regexUrl = "(?:https://.*)?"
 
 workbox.routing.registerRoute(
-  new RegExp(`${regexUrl}/users/*`),
+  new RegExp(`${regexUrl}/users/.*`),
   workbox.strategies.cacheFirst({
-    cacheName: "users data",
+    cacheName: "user-api-data",
   }),
 )
 
 workbox.routing.registerRoute(
-  new RegExp(`${regexUrl}/contents/*`),
+  new RegExp(`${regexUrl}/contents/.*`),
   workbox.strategies.cacheFirst({
-    cacheName: "content data",
+    cacheName: "content-api-data",
   }),
 )
 

@@ -12,7 +12,7 @@ import { ConnectedRouter } from "react-router-redux"
 // initial state for the store
 const initialState = hydrateAll(
   hydrateStore({ key: "auth", namespace: "auth" }),
-  hydrateStore({ key: "cart", namespace: "shoppingCart" })
+  hydrateStore({ key: "cart", namespace: "shoppingCart" }),
 )
 const store = configureStore(initialState)
 
@@ -33,6 +33,12 @@ if (process.env.NODE_ENV === "production") {
   })
 }
 
+if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/service-worker.js")
+  })
+}
+
 const renderApp = Component => {
   // Render the React application to the DOM
   render(
@@ -43,7 +49,7 @@ const renderApp = Component => {
         </ConnectedRouter>
       </div>
     </Provider>,
-    document.getElementById("root")
+    document.getElementById("root"),
   )
 }
 

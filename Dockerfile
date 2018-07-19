@@ -30,10 +30,11 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # copy only necessary files
-COPY package-lock.json .babelrc ./
+COPY package-lock.json .babelrc config-overrides.js ./
 
 # package.json have to be modified later on, so 
 ADD package.json package-dev.json
+
 # create new package.json with relative path
 RUN jq '. + {"homepage": "/stockcenter"}' package-dev.json > package.json \
   && rm package-dev.json
